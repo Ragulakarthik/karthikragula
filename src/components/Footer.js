@@ -34,10 +34,10 @@ export default function Footer() {
   if (pathname !== "/") return null;
 
   return (
-    <footer className="mt-auto border-t border-black/10 py-8 text-sm text-black/60 dark:border-white/10 dark:text-white/60">
+    <footer className="mt-auto border-t-[3px] border-[var(--line)] py-8 text-sm font-medium text-[var(--muted)]">
       <div className="flex w-full flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6 lg:px-10 2xl:px-16">
         <p>&copy; {new Date().getFullYear()} Karthik Ragula. All rights reserved.</p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           {SOCIAL_LINKS.map(({ label, href, Icon }) => (
             <a
               key={label}
@@ -46,9 +46,9 @@ export default function Footer() {
               rel="noopener noreferrer"
               title={label}
               aria-label={label}
-              className="text-black/60 transition hover:text-red-600 dark:text-white/60"
+              className="flex h-9 w-9 items-center justify-center rounded-md border-2 border-[var(--line)] text-[var(--ink)] transition hover:bg-[var(--accent)] hover:text-white"
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-4 w-4" />
             </a>
           ))}
         </div>

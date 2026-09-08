@@ -1,28 +1,63 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2efe6;
+  --surface: #ffffff;
+  --ink: #111111;
+  --muted: #5c5a54;
+  --accent: #2b59ff;
+  --accent-ink: #ffffff;
+  --line: #111111;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-foreground: var(--ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-grotesk);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background-image: radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+  border: 3px solid var(--background);
+}
+
+.gwk-brutal {
+  border: 2.5px solid var(--line);
+  box-shadow: 5px 5px 0 0 var(--line);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.gwk-brutal:hover,
+button.gwk-brutal:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0 0 var(--line);
+}
+
+.gwk-brutal-sm {
+  border: 2px solid var(--line);
+  box-shadow: 3px 3px 0 0 var(--line);
 }
 
 @keyframes gwk-panel-in {
@@ -68,26 +103,4 @@ body {
 
 .gwk-row-in {
   animation: gwk-row-in 0.4s ease-out both;
-}
-
-@keyframes gwk-shimmer {
-  0% {
-    background-position: -120% 0;
-  }
-  100% {
-    background-position: 220% 0;
-  }
-}
-
-.gwk-shimmer-bar {
-  background-image: linear-gradient(
-    100deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.9) 50%,
-    transparent 70%
-  ),
-    linear-gradient(90deg, #f97316, #dc2626, #f97316);
-  background-size: 60% 100%, 100% 100%;
-  background-repeat: no-repeat;
-  animation: gwk-shimmer 2.8s ease-in-out infinite;
 }

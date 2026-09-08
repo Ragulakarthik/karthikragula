@@ -26,12 +26,19 @@ export default async function CategoryPage({ params }) {
 
   return (
     <div className="w-full px-4 py-10 sm:px-6 lg:pl-10 lg:pr-0 2xl:pl-16">
-      <div className="mb-8">
-        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
-          <span>{category.emoji}</span>
-          {category.label}
-        </h1>
-        <p className="mt-1 text-black/60 dark:text-white/60">{category.description}</p>
+      <div className="mb-8 flex items-center gap-4">
+        <span
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[var(--line)] text-2xl"
+          style={{ backgroundColor: category.color }}
+        >
+          {category.emoji}
+        </span>
+        <div>
+          <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            {category.label}
+          </h1>
+          <p className="mt-1 font-medium text-[var(--muted)]">{category.description}</p>
+        </div>
       </div>
       <CategoryClient category={category} videos={videos} />
     </div>

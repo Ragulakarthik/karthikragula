@@ -76,9 +76,9 @@ export default function CategoryClient({ category, videos }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Search in ${category.label}...`}
-            className="w-full max-w-md rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm outline-none focus:border-red-500 dark:border-white/15 dark:bg-white/5"
+            className="gwk-brutal-sm w-full max-w-md rounded-md bg-[var(--surface)] px-4 py-2 text-sm font-medium text-[var(--ink)] outline-none placeholder:text-[var(--muted)] focus:bg-[var(--background)]"
           />
-          <span className="text-sm text-black/50 dark:text-white/50">
+          <span className="text-sm font-bold text-[var(--muted)]">
             {isGrouped ? videos.length : filtered.length} video
             {(isGrouped ? videos.length : filtered.length) === 1 ? "" : "s"}
           </span>
@@ -87,7 +87,7 @@ export default function CategoryClient({ category, videos }) {
         {isGrouped ? (
           <CompanyAccordion groups={groups} query={query} />
         ) : filtered.length === 0 ? (
-          <p className="py-16 text-center text-black/50 dark:text-white/50">
+          <p className="py-16 text-center font-medium text-[var(--muted)]">
             No videos match your search.
           </p>
         ) : (

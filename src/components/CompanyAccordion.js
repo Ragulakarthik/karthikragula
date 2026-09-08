@@ -21,7 +21,7 @@ export default function CompanyAccordion({ groups, query }) {
   const noMatches = isSearching && filteredGroups.every((g) => g.matches.length === 0);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4">
       {filteredGroups.map((g) => {
         if (isSearching && g.matches.length === 0) return null;
         const isOpen = isSearching ? true : openCompany === g.label;
@@ -30,10 +30,7 @@ export default function CompanyAccordion({ groups, query }) {
         const shown = isSearching ? g.matches : g.videos;
 
         return (
-          <div
-            key={g.label}
-            className="overflow-hidden rounded-xl border border-black/10 dark:border-white/10"
-          >
+          <div key={g.label} className="gwk-brutal-sm overflow-hidden rounded-lg bg-[var(--surface)]">
             <button
               type="button"
               onClick={() =>
@@ -41,35 +38,35 @@ export default function CompanyAccordion({ groups, query }) {
                 setOpenCompany((prev) => (prev === g.label ? null : g.label))
               }
               className={`flex w-full flex-col gap-2 px-4 py-3 text-left transition ${
-                isOpen
-                  ? "bg-black/[0.03] dark:bg-white/[0.05]"
-                  : "hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
+                isOpen ? "bg-[var(--accent)] text-white" : "hover:bg-[var(--background)]"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-semibold">{g.label}</span>
+                <span className="font-display font-bold">{g.label}</span>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-black/50 dark:text-white/50">
+                  <span
+                    className={`text-xs font-bold ${isOpen ? "text-white/80" : "text-[var(--muted)]"}`}
+                  >
                     {doneCount}/{g.videos.length} completed
                   </span>
                   <span
-                    className={`text-black/40 transition-transform dark:text-white/40 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
+                    className={`font-bold transition-transform ${isOpen ? "rotate-180" : ""}`}
                   >
                     ▾
                   </span>
                 </div>
               </div>
-              <div className="h-1.5 w-full rounded-full bg-black/10 dark:bg-white/10">
+              <div
+                className={`h-2 w-full overflow-hidden rounded border-2 ${isOpen ? "border-white/60" : "border-[var(--line)]"}`}
+              >
                 <div
-                  className="h-1.5 rounded-full bg-green-600 transition-all duration-500"
+                  className={`h-full transition-all duration-500 ${isOpen ? "bg-white" : "bg-emerald-500"}`}
                   style={{ width: `${pct}%` }}
                 />
               </div>
             </button>
             {isOpen && (
-              <div className="grid grid-cols-1 gap-4 border-t border-black/10 p-4 sm:grid-cols-2 xl:grid-cols-3 dark:border-white/10">
+              <div className="grid grid-cols-1 gap-4 border-t-[3px] border-[var(--line)] bg-[var(--background)] p-4 sm:grid-cols-2 xl:grid-cols-3">
                 {shown.map((v) => (
                   <VideoCard key={v.id} video={v} />
                 ))}
@@ -79,7 +76,7 @@ export default function CompanyAccordion({ groups, query }) {
         );
       })}
       {noMatches && (
-        <p className="py-16 text-center text-black/50 dark:text-white/50">
+        <p className="py-16 text-center font-medium text-[var(--muted)]">
           No videos match your search.
         </p>
       )}

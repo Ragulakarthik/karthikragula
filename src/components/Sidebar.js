@@ -18,38 +18,43 @@ export default function Sidebar({ collapsed, onToggle }) {
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-30 hidden flex-col border-r border-black/10 bg-white p-3 transition-[width] duration-200 lg:flex dark:border-white/10 dark:bg-black/40 ${
+      className={`fixed inset-y-0 left-0 z-30 hidden flex-col border-r-[3px] border-[var(--line)] bg-[var(--surface)] p-3 transition-[width] duration-200 lg:flex ${
         collapsed ? "w-16 items-center" : "w-56"
       }`}
     >
-      <div className={`mb-6 flex w-full items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}>
+      <div
+        className={`mb-6 flex w-full items-center ${collapsed ? "justify-center" : "justify-between"} px-1`}
+      >
         {!collapsed && (
-          <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-            <span className="text-red-600">Karthik</span> Ragula
+          <Link href="/" className="font-display text-lg font-bold tracking-tight">
+            <span className="bg-[var(--accent)] px-1 text-white">Karthik</span> Ragula
           </Link>
         )}
         <button
           type="button"
           onClick={onToggle}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-base font-bold hover:bg-black/5 dark:hover:bg-white/10"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border-2 border-[var(--line)] text-base font-bold transition hover:bg-[var(--accent)] hover:text-white"
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? "»" : "«"}
         </button>
       </div>
-      <nav className="flex w-full flex-col gap-1">
+      <nav className="flex w-full flex-col gap-2">
         {NAV_ITEMS.map((item) => {
-          const active =
-            item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
               title={item.label}
-              className={`flex items-center gap-2 rounded-lg py-2 text-sm font-medium transition ${
+              className={`flex items-center gap-2 rounded-md border-2 py-2 text-sm font-bold transition ${
                 collapsed ? "justify-center px-0" : "px-3"
-              } ${active ? "bg-red-600 text-white" : "hover:bg-black/5 dark:hover:bg-white/10"}`}
+              } ${
+                active
+                  ? "border-[var(--line)] bg-[var(--accent)] text-white shadow-[3px_3px_0_0_var(--line)]"
+                  : "border-transparent text-[var(--muted)] hover:border-[var(--line)] hover:bg-[var(--background)]"
+              }`}
             >
               <span className="text-lg leading-none">{item.emoji}</span>
               {!collapsed && item.label}

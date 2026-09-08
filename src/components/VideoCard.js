@@ -12,32 +12,30 @@ export default function VideoCard({ video }) {
 
   return (
     <div
-      className={`group relative flex flex-col overflow-hidden rounded-xl border bg-white transition hover:-translate-y-0.5 hover:shadow-lg dark:bg-white/5 ${
-        isDone
-          ? "border-green-500/50 ring-1 ring-green-500/30"
-          : "border-black/10 dark:border-white/10"
+      className={`group gwk-brutal relative flex flex-col overflow-hidden rounded-lg transition ${
+        isDone ? "bg-[#e9ffe9]" : "bg-[var(--surface)]"
       }`}
     >
       <a
         href={video.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="relative block aspect-video w-full overflow-hidden bg-black/5"
+        className="relative block aspect-video w-full overflow-hidden border-b-[3px] border-[var(--line)] bg-black/10"
       >
         <Image
           src={video.thumbnail}
           alt={video.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className={`object-cover transition duration-300 group-hover:scale-105 ${isDone ? "opacity-70" : ""}`}
+          className={`object-cover transition duration-300 group-hover:scale-105 ${isDone ? "opacity-80" : ""}`}
         />
         {duration && (
-          <span className="absolute bottom-1.5 right-1.5 rounded bg-black/80 px-1.5 py-0.5 text-xs font-medium text-white">
+          <span className="absolute bottom-1.5 right-1.5 rounded border-2 border-[var(--line)] bg-white px-1.5 py-0.5 text-xs font-bold">
             {duration}
           </span>
         )}
         <span className="absolute inset-0 flex items-center justify-center opacity-0 transition group-hover:opacity-100">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600/90 text-white shadow-lg">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[var(--line)] bg-[var(--accent)] text-white shadow-[3px_3px_0_0_var(--line)]">
             ▶
           </span>
         </span>
@@ -47,31 +45,27 @@ export default function VideoCard({ video }) {
         type="button"
         onClick={() => toggle(video.id)}
         aria-pressed={isDone}
-        className={`absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border-2 text-sm font-bold shadow transition ${
-          isDone
-            ? "border-green-600 bg-green-600 text-white"
-            : "border-white/80 bg-black/40 text-white/0 hover:text-white/80"
+        className={`absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-md border-2 border-[var(--line)] text-sm font-bold shadow-[2px_2px_0_0_var(--line)] transition ${
+          isDone ? "bg-emerald-500 text-white" : "bg-white text-white/0 hover:text-black/40"
         }`}
         title={isDone ? "Mark as not completed" : "Mark as completed"}
       >
         ✓
       </button>
 
-      <div className="flex flex-1 flex-col gap-1 p-3">
+      <div className="flex flex-1 flex-col gap-1.5 p-3">
         {(video.company || video.group) && (
-          <span className="w-fit rounded-full bg-indigo-600/10 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:text-indigo-300">
+          <span className="w-fit rounded border-2 border-[var(--line)] bg-[var(--accent)] px-2 py-0.5 text-xs font-bold text-white">
             {video.company || video.group}
           </span>
         )}
         <a href={video.url} target="_blank" rel="noopener noreferrer">
-          <h3 className="line-clamp-2 text-sm font-semibold leading-snug hover:underline">
+          <h3 className="line-clamp-2 text-sm font-bold leading-snug text-[var(--ink)] hover:underline">
             {video.title}
           </h3>
         </a>
         {views && (
-          <span className="mt-auto text-xs text-black/50 dark:text-white/50">
-            {views}
-          </span>
+          <span className="mt-auto text-xs font-medium text-[var(--muted)]">{views}</span>
         )}
       </div>
     </div>

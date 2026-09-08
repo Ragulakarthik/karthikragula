@@ -5,7 +5,7 @@ export const CATEGORIES = [
     emoji: "🏢",
     description: "Interview experiences, training process & prep, company-wise.",
     inNav: true,
-    color: "#3b82f6",
+    color: "#2b59ff",
   },
   {
     id: "dsa",
@@ -13,7 +13,7 @@ export const CATEGORIES = [
     emoji: "🧩",
     description: "LeetCode problems solved in Java, explained in Telugu.",
     inNav: true,
-    color: "#10b981",
+    color: "#16a34a",
   },
   {
     id: "resume",
@@ -21,7 +21,7 @@ export const CATEGORIES = [
     emoji: "📄",
     description: "Resume building tips for freshers.",
     inNav: true,
-    color: "#f59e0b",
+    color: "#ff6a00",
   },
   {
     id: "career-tips",
@@ -29,7 +29,7 @@ export const CATEGORIES = [
     emoji: "🎯",
     description: "Roadmaps, certifications & internship advice.",
     inNav: true,
-    color: "#8b5cf6",
+    color: "#7c3aed",
   },
   {
     id: "miscellaneous",
@@ -37,7 +37,7 @@ export const CATEGORIES = [
     emoji: "🎬",
     description: "Vlogs and other videos that don't fit elsewhere.",
     inNav: true,
-    color: "#ec4899",
+    color: "#ff2d78",
   },
 ];
 

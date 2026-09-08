@@ -7,25 +7,37 @@ export default function Home() {
     <div className="w-full px-4 py-12 sm:px-6 lg:pl-10 lg:pr-0 2xl:pl-16">
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="min-w-0 flex-1 lg:pr-96">
-          <section className="mb-10 text-center">
-            <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Everything you need to prep, in one place.
+          <section className="mb-12 text-center">
+            <span className="gwk-brutal-sm inline-block rotate-[-1.5deg] rounded-md bg-[var(--accent)] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-white">
+              The Karthik Ragula Archive
+            </span>
+            <h1 className="font-display mt-5 text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
+              Everything you need
+              <br />
+              to <span className="bg-[var(--accent)] px-2 text-white">prep</span>, in one place.
             </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-black/60 dark:text-white/60">
-              Interview prep, DSA in Java, resume tips & career advice.
+            <p className="mx-auto mt-4 max-w-2xl font-medium text-[var(--muted)]">
+              Interview prep, DSA in Java, resume tips &amp; career advice.
             </p>
           </section>
 
-          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {CATEGORIES.filter((c) => c.inNav).map((c) => (
               <Link
                 key={c.id}
                 href={`/category/${c.id}`}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-black/10 bg-white p-8 text-center transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/5"
+                className="gwk-brutal group flex flex-col items-center gap-3 rounded-xl bg-[var(--surface)] p-8 text-center"
               >
-                <span className="text-4xl">{c.emoji}</span>
-                <span className="text-lg font-bold">{c.label} Sheet</span>
-                <span className="text-sm font-semibold text-red-600">
+                <span
+                  className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[var(--line)] text-3xl"
+                  style={{ backgroundColor: c.color }}
+                >
+                  {c.emoji}
+                </span>
+                <span className="font-display text-lg font-bold tracking-tight">
+                  {c.label} Sheet
+                </span>
+                <span className="rounded border-2 border-[var(--line)] bg-[var(--ink)] px-3 py-1 text-sm font-bold text-white transition group-hover:bg-[var(--accent)]">
                   Open Sheet &rarr;
                 </span>
               </Link>
