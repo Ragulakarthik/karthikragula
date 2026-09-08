@@ -69,7 +69,7 @@ export default function CategoryClient({ category, videos }) {
 
   return (
     <div className="flex flex-col gap-8 lg:flex-row">
-      <div className="min-w-0 flex-1 lg:pr-80">
+      <div className="min-w-0 flex-1 lg:pr-96">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <input
             type="search"

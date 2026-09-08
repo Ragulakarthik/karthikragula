@@ -20,104 +20,148 @@ function InfoTooltip() {
     <div className="group relative">
       <button
         type="button"
-        className="flex h-6 w-6 items-center justify-center rounded-full border border-black/15 text-[11px] font-bold text-black/50 transition hover:border-black/30 hover:text-black/80 dark:border-white/20 dark:text-white/50 dark:hover:border-white/40 dark:hover:text-white/90"
+        className="flex h-6 w-6 items-center justify-center rounded-full border border-black/15 text-[11px] font-bold text-black/50 transition hover:scale-110 hover:border-orange-500 hover:text-orange-600 dark:border-white/20 dark:text-white/50 dark:hover:border-orange-400 dark:hover:text-orange-400"
         aria-label="About progress"
       >
         i
       </button>
-      <div className="pointer-events-none absolute right-0 top-full z-30 mt-2 w-64 rounded-xl border border-black/10 bg-white p-4 text-left text-xs leading-relaxed text-black/70 opacity-0 shadow-xl transition duration-150 group-hover:opacity-100 dark:border-white/10 dark:bg-neutral-900 dark:text-white/70">
-        <p className="mb-2 text-[11px] font-bold uppercase tracking-wide text-black/40 dark:text-white/40">
+      <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-64 rounded-2xl border border-black/10 bg-white/95 p-4 text-left text-xs leading-relaxed text-black/60 opacity-0 shadow-2xl backdrop-blur-xl transition duration-150 group-hover:opacity-100 dark:border-white/10 dark:bg-neutral-900/95 dark:text-white/60">
+        <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-black/70 dark:text-white/80">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full border border-orange-500/60 text-[9px] text-orange-600 dark:text-orange-400">
+            i
+          </span>
           About Progress
         </p>
         <ol className="list-decimal space-y-1.5 pl-4">
-          <li>This shows your global progress across the whole site — every category combined.</li>
-          <li>The ring is split by category, so you can see where your completions come from.</li>
-          <li>Tick or untick any video anytime — nothing is locked in.</li>
+          <li>
+            This represents your{" "}
+            <span className="font-semibold text-orange-600 dark:text-orange-400">
+              global progress
+            </span>{" "}
+            across the platform.
+          </li>
+          <li>
+            The ring is{" "}
+            <span className="font-semibold text-orange-600 dark:text-orange-400">
+              split by category
+            </span>
+            , so you can see where it comes from.
+          </li>
+          <li>
+            Videos can be{" "}
+            <span className="font-semibold text-orange-600 dark:text-orange-400">
+              ticked or unticked
+            </span>{" "}
+            anytime — nothing is locked in.
+          </li>
         </ol>
-        <p className="mt-2 font-medium text-black/80 dark:text-white/80">
-          Keep watching to grow your progress! 🚀
+        <p className="mt-2 text-black/70 dark:text-white/70">
+          Keep watching to grow your{" "}
+          <span className="font-semibold text-orange-600 dark:text-orange-400">progress</span>!
         </p>
       </div>
     </div>
   );
 }
 
-function SegmentedRing({ segments, total, done, size = 128, radius = 52, strokeWidth = 11 }) {
+function withOffsets(segments) {
+  let cumulative = 0;
+  return segments.map((s) => {
+    const dashoffset = -cumulative;
+    cumulative += s.length;
+    return { ...s, dashoffset };
+  });
+}
+
+function SegmentedRing({ segments, total, done, size = 140, radius = 56, strokeWidth = 12 }) {
   const circumference = 2 * Math.PI * radius;
   const center = size / 2;
-  let cumulative = 0;
+  const positioned = withOffsets(segments);
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0">
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        strokeWidth={strokeWidth}
-        className="fill-none stroke-black/[0.06] dark:stroke-white/10"
-      />
-      <g transform={`rotate(-90 ${center} ${center})`}>
-        {segments.map((s) => {
-          if (s.length <= 0.5) return null;
-          const dashoffset = -cumulative;
-          cumulative += s.length;
-          return (
-            <circle
-              key={s.key}
-              cx={center}
-              cy={center}
-              r={radius}
-              strokeWidth={strokeWidth}
-              stroke={s.color}
-              strokeDasharray={`${s.length} ${circumference - s.length}`}
-              strokeDashoffset={dashoffset}
-              className="fill-none transition-all duration-500 ease-out"
-            />
-          );
-        })}
-      </g>
-      <text x={center} y={center - 6} textAnchor="middle" className="fill-current text-3xl font-extrabold">
-        {done}
-      </text>
-      <line
-        x1={center - 20}
-        y1={center + 8}
-        x2={center + 20}
-        y2={center + 8}
-        strokeWidth="1"
-        className="stroke-black/15 dark:stroke-white/20"
-      />
-      <text
-        x={center}
-        y={center + 26}
-        textAnchor="middle"
-        className="fill-current text-xs font-semibold text-black/40 dark:text-white/40"
-      >
-        {total}
-      </text>
-    </svg>
+    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+      <div className="absolute h-24 w-24 rounded-full bg-gradient-to-br from-orange-500/30 via-red-500/20 to-transparent blur-2xl" />
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="relative shrink-0 -rotate-0">
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
+          strokeWidth={strokeWidth}
+          className="fill-none stroke-black/[0.06] dark:stroke-white/10"
+        />
+        <g transform={`rotate(-90 ${center} ${center})`}>
+          {positioned.map((s) => {
+            if (s.length <= 0.5) return null;
+            return (
+              <circle
+                key={s.key}
+                cx={center}
+                cy={center}
+                r={radius}
+                strokeWidth={strokeWidth}
+                stroke={s.color}
+                strokeLinecap="round"
+                strokeDasharray={`${Math.max(s.length - 3, 0)} ${circumference}`}
+                strokeDashoffset={s.dashoffset}
+                className="fill-none transition-all duration-500 ease-out"
+              />
+            );
+          })}
+        </g>
+      </svg>
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+        <span className="bg-gradient-to-br from-orange-500 to-red-600 bg-clip-text text-4xl font-black text-transparent">
+          {done}
+        </span>
+        <span className="mt-0.5 h-px w-8 bg-black/15 dark:bg-white/20" />
+        <span className="mt-0.5 text-xs font-bold text-black/35 dark:text-white/35">{total}</span>
+      </div>
+    </div>
   );
 }
 
-function LegendRow({ emoji, color, label, done, total, delay = 0 }) {
+function CategoryChip({ emoji, color, label, done, total, delay = 0 }) {
+  const pct = total ? Math.round((done / total) * 100) : 0;
   const complete = total > 0 && done === total;
+  const size = 48;
+  const radius = 20;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (pct / 100) * circumference;
+  const center = size / 2;
+
   return (
     <div
-      className="gwk-row-in flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 transition-colors duration-200 hover:bg-black/[0.03] dark:hover:bg-white/[0.05]"
+      className="gwk-row-in flex w-16 flex-col items-center gap-1.5"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className="flex min-w-0 items-center gap-2">
-        <span
-          className="h-2.5 w-2.5 shrink-0 rounded-full"
-          style={{ backgroundColor: complete ? COMPLETE_COLOR : color }}
-        />
-        <span className="truncate text-sm font-medium">
-          {emoji} {label}
-        </span>
+      <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="absolute inset-0">
+          <circle
+            cx={center}
+            cy={center}
+            r={radius}
+            strokeWidth="3.5"
+            className="fill-none stroke-black/10 dark:stroke-white/10"
+          />
+          <circle
+            cx={center}
+            cy={center}
+            r={radius}
+            strokeWidth="3.5"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            stroke={complete ? COMPLETE_COLOR : color}
+            transform={`rotate(-90 ${center} ${center})`}
+            className="fill-none transition-all duration-500 ease-out"
+          />
+        </svg>
+        <span className="text-lg">{complete ? "✅" : emoji}</span>
       </div>
+      <span className="max-w-full truncate text-[10px] font-semibold leading-tight">{label}</span>
       <span
-        className={`shrink-0 text-xs font-semibold ${
-          complete ? "text-green-600" : "text-black/50 dark:text-white/50"
+        className={`text-[10px] font-medium ${
+          complete ? "text-green-600" : "text-black/40 dark:text-white/40"
         }`}
       >
         {done}/{total}
@@ -141,42 +185,43 @@ export default function ProgressPanel() {
   const segments = groupStats.map((g) => ({
     key: g.label,
     color: g.color,
-    length: g.done * circumferenceUnit * (2 * Math.PI * 52),
+    length: g.done * circumferenceUnit * (2 * Math.PI * 56),
   }));
 
   return (
-    <aside className="w-full lg:fixed lg:inset-y-0 lg:right-0 lg:z-20 lg:w-72 lg:overflow-y-auto lg:px-4 lg:py-6">
-      <div className="gwk-panel-in relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-black/10 bg-white p-6 shadow-xl shadow-black/5 dark:border-white/10 dark:bg-white/5 dark:shadow-black/30">
-        <div className="gwk-shimmer-bar pointer-events-none absolute inset-x-0 top-0 h-1.5" />
+    <aside className="w-full lg:pointer-events-none lg:fixed lg:inset-y-0 lg:right-0 lg:z-20 lg:w-80 lg:overflow-y-auto lg:px-4 lg:py-6">
+      <div className="gwk-panel-in pointer-events-auto relative rounded-[28px] bg-gradient-to-br from-orange-500/70 via-red-500/50 to-fuchsia-500/60 p-[1.5px] shadow-2xl shadow-red-900/10 dark:shadow-black/40">
+        <div className="flex flex-col gap-6 rounded-[27px] bg-white/95 p-6 backdrop-blur-xl dark:bg-neutral-950/95">
+          <div className="flex items-center justify-between">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/5 px-3 py-1 text-xs font-bold uppercase tracking-wider dark:bg-white/10">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-600" />
+              Your Progress
+            </span>
+            <InfoTooltip />
+          </div>
 
-        <div className="flex items-center justify-between">
-          <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-bold uppercase tracking-wider dark:bg-white/10">
-            Your Progress
-          </span>
-          <InfoTooltip />
+          <div className="gwk-ring-in flex justify-center">
+            <SegmentedRing segments={segments} total={overallTotal} done={overallDone} />
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-x-3 gap-y-4 border-t border-black/10 pt-5 dark:border-white/10">
+            {groupStats.map((g, i) => (
+              <CategoryChip
+                key={g.label}
+                emoji={g.emoji}
+                color={g.color}
+                label={g.label}
+                done={g.done}
+                total={g.videos.length}
+                delay={i * 60}
+              />
+            ))}
+          </div>
+
+          <p className="text-center text-[11px] leading-snug text-black/35 dark:text-white/35">
+            🔒 Saved only in this browser
+          </p>
         </div>
-
-        <div className="gwk-ring-in flex justify-center">
-          <SegmentedRing segments={segments} total={overallTotal} done={overallDone} />
-        </div>
-
-        <div className="flex flex-col gap-0.5 border-t border-black/10 pt-3 dark:border-white/10">
-          {groupStats.map((g, i) => (
-            <LegendRow
-              key={g.label}
-              emoji={g.emoji}
-              color={g.color}
-              label={g.label}
-              done={g.done}
-              total={g.videos.length}
-              delay={i * 60}
-            />
-          ))}
-        </div>
-
-        <p className="text-center text-[11px] leading-snug text-black/35 dark:text-white/35">
-          🔒 Saved only in this browser
-        </p>
       </div>
     </aside>
   );

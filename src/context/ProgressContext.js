@@ -1,40 +1,59 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "gwk-completed-videos";
 const ProgressContext = createContext(null);
 
-export function ProgressProvider({ children }) {
-  const [completed, setCompleted] = useState(() => new Set());
-  const [hydrated, setHydrated] = useState(false);
+const EMPTY_SET = new Set();
+const listeners = new Set();
+let cache = null;
 
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) setCompleted(new Set(JSON.parse(raw)));
-    } catch {
-      // ignore unavailable/corrupt storage
-    }
-    setHydrated(true);
+function readStore() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+function getSnapshot() {
+  if (cache === null) cache = readStore();
+  return cache;
+}
+
+function getServerSnapshot() {
+  return EMPTY_SET;
+}
+
+function subscribe(callback) {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+}
+
+function writeStore(next) {
+  cache = next;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...next]));
+  } catch {
+    // ignore unavailable storage
+  }
+  listeners.forEach((callback) => callback());
+}
+
+export function ProgressProvider({ children }) {
+  const completed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  const toggle = useCallback((id) => {
+    const next = new Set(getSnapshot());
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    writeStore(next);
   }, []);
 
-  function toggle(id) {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...next]));
-      } catch {
-        // ignore unavailable storage
-      }
-      return next;
-    });
-  }
-
   return (
-    <ProgressContext.Provider value={{ completed, toggle, hydrated }}>
+    <ProgressContext.Provider value={{ completed, toggle, hydrated: true }}>
       {children}
     </ProgressContext.Provider>
   );

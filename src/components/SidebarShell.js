@@ -1,33 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import Sidebar from "@/components/Sidebar";
 
 const STORAGE_KEY = "gwk-sidebar-collapsed";
+const listeners = new Set();
+let cache = null;
+
+function readStore() {
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function getSnapshot() {
+  if (cache === null) cache = readStore();
+  return cache;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+function subscribe(callback) {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+}
+
+function writeStore(next) {
+  cache = next;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+  } catch {
+    // ignore unavailable storage
+  }
+  listeners.forEach((callback) => callback());
+}
 
 export default function SidebarShell({ children }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const collapsed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) setCollapsed(raw === "1");
-    } catch {
-      // ignore unavailable storage
-    }
+  const toggle = useCallback(() => {
+    writeStore(!getSnapshot());
   }, []);
-
-  function toggle() {
-    setCollapsed((prev) => {
-      const next = !prev;
-      try {
-        window.localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
-      } catch {
-        // ignore unavailable storage
-      }
-      return next;
-    });
-  }
 
   return (
     <>

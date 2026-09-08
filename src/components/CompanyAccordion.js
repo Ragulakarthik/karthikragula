@@ -6,7 +6,7 @@ import { useProgress } from "@/context/ProgressContext";
 
 export default function CompanyAccordion({ groups, query }) {
   const { completed } = useProgress();
-  const [openCompany, setOpenCompany] = useState(groups[0]?.label ?? null);
+  const [openCompany, setOpenCompany] = useState(null);
 
   const q = query.trim().toLowerCase();
   const isSearching = q.length > 0;

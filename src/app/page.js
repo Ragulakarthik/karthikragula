@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="w-full px-4 py-12 sm:px-6 lg:pl-10 lg:pr-0 2xl:pl-16">
       <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="min-w-0 flex-1 lg:pr-80">
+        <div className="min-w-0 flex-1 lg:pr-96">
           <section className="mb-10 text-center">
             <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
               Everything you need to prep, in one place.
