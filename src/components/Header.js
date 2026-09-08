@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CATEGORIES } from "@/data/categories";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
   const pathname = usePathname();
@@ -14,6 +15,7 @@ export default function Header() {
         <Link href="/" className="font-display text-lg font-bold tracking-tight">
           <span className="bg-[var(--accent)] px-1 text-white">Karthik</span> Ragula
         </Link>
+        <ThemeToggle />
         {!isHome && (
           <nav className="flex items-center gap-1.5 overflow-x-auto text-sm font-bold sm:gap-2">
             {CATEGORIES.filter((c) => c.inNav).map((c) => (

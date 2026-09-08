@@ -8,6 +8,22 @@
   --accent: #2b59ff;
   --accent-ink: #ffffff;
   --line: #111111;
+  --dot-color: rgba(17, 17, 17, 0.08);
+  --done-tint: #e9ffe9;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --background: #121212;
+  --surface: #1b1b1b;
+  --ink: #f2efe6;
+  --muted: #a39e91;
+  --accent: #6b8bff;
+  --accent-ink: #0a0a0a;
+  --line: #f2efe6;
+  --dot-color: rgba(242, 239, 230, 0.09);
+  --done-tint: #0f2e1a;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -22,8 +38,9 @@ body {
   background: var(--background);
   color: var(--ink);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  background-image: radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
   background-size: 22px 22px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {

@@ -27,12 +27,24 @@ export const metadata = {
     "All of Karthik Ragula's prep videos in one place — company interview experiences, DSA problems in Java, resume tips & career advice.",
 };
 
+const THEME_INIT_SCRIPT = `
+  try {
+    var stored = localStorage.getItem("gwk-theme");
+    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  } catch (e) {}
+`;
+
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${grotesk.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <ProgressProvider>
           <SidebarShell>

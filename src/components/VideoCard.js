@@ -13,7 +13,7 @@ export default function VideoCard({ video }) {
   return (
     <div
       className={`group gwk-brutal relative flex flex-col overflow-hidden rounded-lg transition ${
-        isDone ? "bg-[#e9ffe9]" : "bg-[var(--surface)]"
+        isDone ? "bg-[var(--done-tint)]" : "bg-[var(--surface)]"
       }`}
     >
       <a

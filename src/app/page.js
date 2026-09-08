@@ -37,7 +37,7 @@ export default function Home() {
                 <span className="font-display text-lg font-bold tracking-tight">
                   {c.label} Sheet
                 </span>
-                <span className="rounded border-2 border-[var(--line)] bg-[var(--ink)] px-3 py-1 text-sm font-bold text-white transition group-hover:bg-[var(--accent)]">
+                <span className="rounded border-2 border-[var(--line)] bg-[var(--ink)] px-3 py-1 text-sm font-bold text-[var(--surface)] transition group-hover:bg-[var(--accent)] group-hover:text-white">
                   Open Sheet &rarr;
                 </span>
               </Link>

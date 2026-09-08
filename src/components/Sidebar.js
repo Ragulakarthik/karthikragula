@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CATEGORIES } from "@/data/categories";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", emoji: "🏠" },
@@ -30,15 +31,18 @@ export default function Sidebar({ collapsed, onToggle }) {
             <span className="bg-[var(--accent)] px-1 text-white">Karthik</span> Ragula
           </Link>
         )}
-        <button
-          type="button"
-          onClick={onToggle}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border-2 border-[var(--line)] text-base font-bold transition hover:bg-[var(--accent)] hover:text-white"
-          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          {collapsed ? "»" : "«"}
-        </button>
+        <div className={`flex items-center gap-2 ${collapsed ? "mt-2 flex-col" : ""}`}>
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={onToggle}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border-2 border-[var(--line)] text-base font-bold transition hover:bg-[var(--accent)] hover:text-white"
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? "»" : "«"}
+          </button>
+        </div>
       </div>
       <nav className="flex w-full flex-col gap-2">
         {NAV_ITEMS.map((item) => {
