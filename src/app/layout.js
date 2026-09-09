@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SidebarShell from "@/components/SidebarShell";
+import ChatFab from "@/components/ChatFab";
 import { ProgressProvider } from "@/context/ProgressContext";
 
 const geistSans = Geist({
@@ -24,7 +25,7 @@ const grotesk = Space_Grotesk({
 export const metadata = {
   title: "Karthik Ragula",
   description:
-    "All of Karthik Ragula's prep videos in one place — company interview experiences, DSA problems in Java, resume tips & career advice.",
+    "All of Karthik Ragula's prep videos in one place: company interview experiences, DSA problems in Java, resume tips & career advice.",
 };
 
 const THEME_INIT_SCRIPT = `
@@ -52,6 +53,7 @@ export default function RootLayout({ children }) {
             <main className="flex-1">{children}</main>
             <Footer />
           </SidebarShell>
+          <ChatFab />
         </ProgressProvider>
       </body>
     </html>
