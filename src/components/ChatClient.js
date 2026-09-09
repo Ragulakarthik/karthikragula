@@ -68,7 +68,7 @@ function TurnBubbles({ turn, isLast, onAsk, onCitationHover, onCitationLeave }) 
       <div className="ml-auto max-w-[85%] rounded-lg rounded-br-none bg-[var(--accent)] px-4 py-2.5 text-[15px] font-medium leading-relaxed text-white sm:max-w-[88%] lg:max-w-[760px]">
         {turn.question}
       </div>
-      <div className="mr-auto max-w-[85%] rounded-lg rounded-bl-none border border-[var(--line)]/15 bg-[var(--surface)] px-4 py-3 text-[15px] leading-relaxed text-[var(--ink)] sm:max-w-[88%] lg:max-w-[760px]">
+      <div className="w-full max-w-[760px] rounded-lg rounded-bl-none border border-[var(--line)]/15 bg-[var(--surface)] px-4 py-3 text-[15px] leading-relaxed text-[var(--ink)]">
         {turn.error ? (
           <span className="font-bold text-red-500">{turn.error}</span>
         ) : (
