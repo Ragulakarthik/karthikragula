@@ -1,19 +1,35 @@
 "use client";
 
+import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { CATEGORIES } from "@/data/categories";
+import { CATEGORY_ICONS } from "@/components/CategoryIcons";
 import { getAllVideos, getVideosByCategory } from "@/lib/videos";
 
 const allVideos = getAllVideos();
 
 const categoryGroups = CATEGORIES.filter((c) => c.inNav).map((c) => ({
+  id: c.id,
   label: c.label,
-  emoji: c.emoji,
+  Icon: CATEGORY_ICONS[c.id],
   color: c.color,
   videos: getVideosByCategory(c.id),
 }));
 
 const COMPLETE_COLOR = "#16a34a";
+
+const STATUS_STEPS = [
+  { min: 100, text: "All done! 🏆" },
+  { min: 75, text: "Almost there" },
+  { min: 50, text: "Halfway there" },
+  { min: 25, text: "Making progress" },
+  { min: 1, text: "Just getting started" },
+  { min: 0, text: "Let's get started" },
+];
+
+function statusFor(pct) {
+  return STATUS_STEPS.find((s) => pct >= s.min).text;
+}
 
 function InfoTooltip() {
   return (
@@ -25,7 +41,7 @@ function InfoTooltip() {
       >
         i
       </button>
-      <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-64 rounded-lg border-2 border-[var(--line)] bg-white p-4 text-left text-xs leading-relaxed text-[var(--muted)] opacity-0 shadow-[5px_5px_0_0_var(--line)] transition duration-150 group-hover:opacity-100">
+      <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-64 rounded-lg border-2 border-[var(--line)] bg-[var(--surface)] p-4 text-left text-xs leading-relaxed text-[var(--muted)] opacity-0 shadow-[5px_5px_0_0_var(--line)] transition duration-150 group-hover:opacity-100">
         <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-[var(--ink)]">
           <span className="flex h-4 w-4 items-center justify-center rounded-full border-2 border-[var(--line)] text-[9px]">
             i
@@ -44,7 +60,7 @@ function InfoTooltip() {
           </li>
           <li>
             Videos can be{" "}
-            <span className="font-bold text-[var(--accent)]">ticked or unticked</span> anytime —
+            <span className="font-bold text-[var(--accent)]">ticked or unticked</span> anytime,
             nothing is locked in.
           </li>
         </ol>
@@ -57,103 +73,75 @@ function InfoTooltip() {
   );
 }
 
-function withOffsets(segments) {
-  let cumulative = 0;
-  return segments.map((s) => {
-    const dashoffset = -cumulative;
-    cumulative += s.length;
-    return { ...s, dashoffset };
-  });
-}
-
-function SegmentedRing({ segments, total, done, size = 136, radius = 54, strokeWidth = 14 }) {
-  const circumference = 2 * Math.PI * radius;
-  const center = size / 2;
-  const positioned = withOffsets(segments);
+function StatMeter({ segments, total, done }) {
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const visible = segments.filter((s) => s.pct > 0.4);
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="relative shrink-0">
-        <circle
-          cx={center}
-          cy={center}
-          r={radius}
-          strokeWidth={strokeWidth}
-          className="fill-none stroke-[var(--background)]"
-        />
-        <circle
-          cx={center}
-          cy={center}
-          r={radius}
-          strokeWidth={strokeWidth + 3}
-          className="fill-none stroke-[var(--line)]"
-          style={{ opacity: 0.15 }}
-        />
-        <g transform={`rotate(-90 ${center} ${center})`}>
-          {positioned.map((s) => {
-            if (s.length <= 0.5) return null;
-            return (
-              <circle
-                key={s.key}
-                cx={center}
-                cy={center}
-                r={radius}
-                strokeWidth={strokeWidth}
-                stroke={s.color}
-                strokeDasharray={`${Math.max(s.length - 2, 0)} ${circumference}`}
-                strokeDashoffset={s.dashoffset}
-                className="fill-none transition-all duration-500 ease-out"
-              />
-            );
-          })}
-        </g>
-        <circle
-          cx={center}
-          cy={center}
-          r={radius - strokeWidth / 2 - 4}
-          className="fill-[var(--surface)] stroke-[var(--line)]"
-          strokeWidth="2.5"
-        />
-      </svg>
-      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-4xl font-bold text-[var(--ink)]">{done}</span>
-        <span className="mt-0.5 h-[3px] w-8 bg-[var(--line)]" />
-        <span className="mt-0.5 text-xs font-bold text-[var(--muted)]">{total}</span>
+    <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex flex-col items-center">
+        <span className="font-display leading-none text-[var(--ink)]">
+          <span className="text-6xl font-bold tabular-nums">{pct}</span>
+          <span className="text-2xl font-bold">%</span>
+        </span>
+        <span className="mt-2 text-xs font-bold uppercase tracking-wide text-[var(--muted)]">
+          {done} / {total} watched
+        </span>
+      </div>
+
+      <div className="gwk-brutal-sm flex h-8 w-full overflow-hidden rounded-md bg-[var(--background)]">
+        {visible.map((s) => (
+          <div
+            key={s.key}
+            className="h-full border-r-2 border-[var(--line)] transition-all duration-500"
+            style={{ width: `${s.pct}%`, backgroundColor: s.color }}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-function CategoryChip({ emoji, color, label, done, total, delay = 0 }) {
+function CategoryRow({ id, Icon, color, label, done, total, delay = 0 }) {
   const pct = total ? Math.round((done / total) * 100) : 0;
   const complete = total > 0 && done === total;
 
   return (
-    <div
-      className="gwk-row-in flex w-16 flex-col items-center gap-1.5"
+    <Link
+      href={`/category/${id}`}
+      className="gwk-row-in group -mx-2 flex items-center gap-3 rounded-lg px-2 py-1 transition hover:bg-[var(--background)]"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div
-        className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--line)] text-lg"
-        style={{ backgroundColor: complete ? COMPLETE_COLOR : color }}
-      >
-        <span className={complete ? "" : "opacity-90"}>{complete ? "✅" : emoji}</span>
-      </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full border border-[var(--line)] bg-[var(--background)]">
-        <div
-          className="h-full transition-all duration-500"
-          style={{ width: `${pct}%`, backgroundColor: complete ? COMPLETE_COLOR : color }}
-        />
-      </div>
-      <span className="max-w-full truncate text-[10px] font-bold leading-tight text-[var(--ink)]">
-        {label}
-      </span>
       <span
-        className={`text-[10px] font-bold ${complete ? "text-emerald-600" : "text-[var(--muted)]"}`}
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[var(--line)] text-white transition-transform group-hover:scale-110 ${
+          complete ? "gwk-complete-pulse" : ""
+        }`}
+        style={{ backgroundColor: color }}
       >
-        {done}/{total}
+        <Icon className="h-4 w-4" />
       </span>
-    </div>
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+        <div className="flex items-center justify-between gap-2">
+          <span className="truncate text-xs font-bold text-[var(--ink)] group-hover:underline">
+            {label}
+          </span>
+          <span
+            className={`shrink-0 text-[11px] font-bold ${complete ? "text-emerald-600" : "text-[var(--muted)]"}`}
+          >
+            {done}/{total}
+          </span>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--line)]/12">
+          <div
+            className="h-full min-w-[3px] rounded-full transition-all duration-500"
+            style={{ width: `${pct}%`, backgroundColor: complete ? COMPLETE_COLOR : color }}
+          />
+        </div>
+      </div>
+      <span className="shrink-0 -translate-x-1 text-sm font-bold text-[var(--muted)] opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100">
+        →
+      </span>
+    </Link>
   );
 }
 
@@ -162,8 +150,8 @@ export default function ProgressPanel() {
 
   const overallTotal = allVideos.length;
   const overallDone = hydrated ? allVideos.filter((v) => completed.has(v.id)).length : 0;
+  const overallPct = overallTotal ? Math.round((overallDone / overallTotal) * 100) : 0;
 
-  const circumferenceUnit = overallTotal ? 1 / overallTotal : 0;
   const groupStats = categoryGroups.map((g) => ({
     ...g,
     done: hydrated ? g.videos.filter((v) => completed.has(v.id)).length : 0,
@@ -172,7 +160,7 @@ export default function ProgressPanel() {
   const segments = groupStats.map((g) => ({
     key: g.label,
     color: g.color,
-    length: g.done * circumferenceUnit * (2 * Math.PI * 54),
+    pct: overallTotal ? (g.done / overallTotal) * 100 : 0,
   }));
 
   return (
@@ -180,21 +168,29 @@ export default function ProgressPanel() {
       <div className="gwk-panel-in gwk-brutal pointer-events-auto relative rounded-xl bg-[var(--surface)]">
         <div className="flex flex-col gap-6 p-6">
           <div className="flex items-center justify-between">
-            <span className="font-display inline-flex items-center gap-1.5 rounded-md border-2 border-[var(--line)] bg-[var(--accent)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+            <span className="font-display gwk-brutal-sm inline-flex -rotate-2 items-center gap-1.5 rounded-md bg-[var(--accent)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
               Your Progress
             </span>
             <InfoTooltip />
           </div>
 
-          <div className="gwk-ring-in flex justify-center">
-            <SegmentedRing segments={segments} total={overallTotal} done={overallDone} />
+          <div className="gwk-ring-in flex flex-col items-center gap-4 py-1">
+            <StatMeter segments={segments} total={overallTotal} done={overallDone} />
+            <span
+              className={`gwk-brutal-sm rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide ${
+                overallPct >= 100 ? "bg-emerald-500 text-white" : "bg-[var(--background)] text-[var(--ink)]"
+              }`}
+            >
+              {statusFor(overallPct)}
+            </span>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-x-3 gap-y-4 border-t-[3px] border-[var(--line)] pt-5">
+          <div className="flex flex-col gap-1 border-t-[3px] border-[var(--line)] pt-5">
             {groupStats.map((g, i) => (
-              <CategoryChip
+              <CategoryRow
                 key={g.label}
-                emoji={g.emoji}
+                id={g.id}
+                Icon={g.Icon}
                 color={g.color}
                 label={g.label}
                 done={g.done}
