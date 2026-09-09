@@ -10,6 +10,7 @@
   --line: #111111;
   --dot-color: rgba(17, 17, 17, 0.08);
   --done-tint: #e9ffe9;
+  --cursor-hover-bg: rgba(43, 89, 255, 0.14);
   color-scheme: light;
 }
 
@@ -23,6 +24,7 @@
   --line: #f2efe6;
   --dot-color: rgba(242, 239, 230, 0.09);
   --done-tint: #0f2e1a;
+  --cursor-hover-bg: rgba(107, 139, 255, 0.18);
   color-scheme: dark;
 }
 
@@ -167,4 +169,37 @@ button.gwk-brutal:hover {
 
 .gwk-scroll-x::-webkit-scrollbar {
   display: none;
+}
+
+.gwk-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--line);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    width 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.4),
+    height 0.2s cubic-bezier(0.2, 0.8, 0.3, 1.4),
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  will-change: transform;
+}
+
+.gwk-cursor-ring.gwk-cursor-hover {
+  width: 46px;
+  height: 46px;
+  border-color: var(--accent);
+  background-color: var(--cursor-hover-bg);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .gwk-cursor-ring {
+    display: none;
+  }
 }

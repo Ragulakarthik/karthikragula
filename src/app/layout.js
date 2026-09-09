@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SidebarShell from "@/components/SidebarShell";
 import ChatFab from "@/components/ChatFab";
+import CursorFX from "@/components/CursorFX";
 import { ProgressProvider } from "@/context/ProgressContext";
 
 const geistSans = Geist({
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
             <Footer />
           </SidebarShell>
           <ChatFab />
+          <CursorFX />
         </ProgressProvider>
       </body>
     </html>
