@@ -57,10 +57,10 @@ export default function CompanyAccordion({ groups, query }) {
                 </div>
               </div>
               <div
-                className={`h-2 w-full overflow-hidden rounded border-2 ${isOpen ? "border-white/60" : "border-[var(--line)]"}`}
+                className={`h-1.5 w-full overflow-hidden rounded-full ${isOpen ? "bg-white/25" : "bg-[var(--line)]/12"}`}
               >
                 <div
-                  className={`h-full transition-all duration-500 ${isOpen ? "bg-white" : "bg-emerald-500"}`}
+                  className={`h-full min-w-[3px] rounded-full transition-all duration-500 ${isOpen ? "bg-white" : "bg-emerald-500"}`}
                   style={{ width: `${pct}%` }}
                 />
               </div>

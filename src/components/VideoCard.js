@@ -30,7 +30,7 @@ export default function VideoCard({ video }) {
           className={`object-cover transition duration-300 group-hover:scale-105 ${isDone ? "opacity-80" : ""}`}
         />
         {duration && (
-          <span className="absolute bottom-1.5 right-1.5 rounded border-2 border-[var(--line)] bg-white px-1.5 py-0.5 text-xs font-bold">
+          <span className="absolute bottom-1.5 right-1.5 rounded border-2 border-[var(--line)] bg-[var(--surface)] px-1.5 py-0.5 text-xs font-bold text-[var(--ink)]">
             {duration}
           </span>
         )}

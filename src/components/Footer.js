@@ -34,8 +34,8 @@ export default function Footer() {
   if (pathname !== "/") return null;
 
   return (
-    <footer className="mt-auto border-t-[3px] border-[var(--line)] py-8 text-sm font-medium text-[var(--muted)]">
-      <div className="flex w-full flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6 lg:px-10 2xl:px-16">
+    <footer className="mt-auto flex justify-center border-t-[3px] border-[var(--line)] py-4 text-sm font-medium text-[var(--muted)]">
+      <div className="flex w-full max-w-3xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
         <p>&copy; {new Date().getFullYear()} Karthik Ragula. All rights reserved.</p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           {SOCIAL_LINKS.map(({ label, href, Icon }) => (
