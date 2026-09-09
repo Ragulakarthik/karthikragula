@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CATEGORIES } from "@/data/categories";
+import { CATEGORY_ICONS, HomeIcon } from "@/components/CategoryIcons";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home", emoji: "🏠" },
+  { href: "/", label: "Home", Icon: HomeIcon },
   ...CATEGORIES.filter((c) => c.inNav).map((c) => ({
     href: `/category/${c.id}`,
     label: c.label,
-    emoji: c.emoji,
+    Icon: CATEGORY_ICONS[c.id],
   })),
 ];
 
@@ -60,7 +61,7 @@ export default function Sidebar({ collapsed, onToggle }) {
                   : "border-transparent text-[var(--muted)] hover:border-[var(--line)] hover:bg-[var(--background)]"
               }`}
             >
-              <span className="text-lg leading-none">{item.emoji}</span>
+              <item.Icon className="h-[18px] w-[18px] shrink-0" />
               {!collapsed && item.label}
             </Link>
           );

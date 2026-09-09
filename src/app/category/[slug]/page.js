@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { CATEGORIES, getCategory } from "@/data/categories";
 import { getVideosByCategory } from "@/lib/videos";
+import { CATEGORY_ICONS } from "@/components/CategoryIcons";
 import CategoryClient from "@/components/CategoryClient";
 
 export function generateStaticParams() {
@@ -12,7 +13,7 @@ export async function generateMetadata({ params }) {
   const category = getCategory(slug);
   if (!category) return {};
   return {
-    title: `${category.label} — Karthik Ragula`,
+    title: `${category.label} - Karthik Ragula`,
     description: category.description,
   };
 }
@@ -23,15 +24,16 @@ export default async function CategoryPage({ params }) {
   if (!category) notFound();
 
   const videos = getVideosByCategory(category.id);
+  const Icon = CATEGORY_ICONS[category.id];
 
   return (
     <div className="w-full px-4 py-10 sm:px-6 lg:pl-10 lg:pr-0 2xl:pl-16">
       <div className="mb-8 flex items-center gap-4">
         <span
-          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[var(--line)] text-2xl"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[var(--line)] text-white"
           style={{ backgroundColor: category.color }}
         >
-          {category.emoji}
+          <Icon className="h-6 w-6" />
         </span>
         <div>
           <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">

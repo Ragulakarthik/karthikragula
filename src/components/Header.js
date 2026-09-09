@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CATEGORIES } from "@/data/categories";
+import { CATEGORY_ICONS } from "@/components/CategoryIcons";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
@@ -18,15 +19,19 @@ export default function Header() {
         <ThemeToggle />
         {!isHome && (
           <nav className="flex items-center gap-1.5 overflow-x-auto text-sm font-bold sm:gap-2">
-            {CATEGORIES.filter((c) => c.inNav).map((c) => (
-              <Link
-                key={c.id}
-                href={`/category/${c.id}`}
-                className="whitespace-nowrap rounded-md border-2 border-[var(--line)] px-3 py-1.5 transition hover:bg-[var(--accent)] hover:text-white"
-              >
-                {c.emoji} {c.label}
-              </Link>
-            ))}
+            {CATEGORIES.filter((c) => c.inNav).map((c) => {
+              const Icon = CATEGORY_ICONS[c.id];
+              return (
+                <Link
+                  key={c.id}
+                  href={`/category/${c.id}`}
+                  className="flex items-center gap-1.5 whitespace-nowrap rounded-md border-2 border-[var(--line)] px-3 py-1.5 transition hover:bg-[var(--accent)] hover:text-white"
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {c.label}
+                </Link>
+              );
+            })}
           </nav>
         )}
       </div>
