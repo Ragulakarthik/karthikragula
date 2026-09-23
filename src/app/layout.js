@@ -7,6 +7,7 @@ import SidebarShell from "@/components/SidebarShell";
 // import ChatFab from "@/components/ChatFab";
 import CursorFX from "@/components/CursorFX";
 import { ProgressProvider } from "@/context/ProgressContext";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +25,23 @@ const grotesk = Space_Grotesk({
   weight: ["500", "600", "700"],
 });
 
+const SITE_DESCRIPTION =
+  "All of Karthik Ragula's prep videos in one place: company interview experiences, DSA problems in Java, resume tips & career advice.";
+
 export const metadata = {
-  title: "Karthik Ragula",
-  description:
-    "All of Karthik Ragula's prep videos in one place: company interview experiences, DSA problems in Java, resume tips & career advice.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    locale: "en_IN",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const THEME_INIT_SCRIPT = `

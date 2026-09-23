@@ -3,6 +3,7 @@ import { CATEGORIES, getCategory } from "@/data/categories";
 import { getVideosByCategory } from "@/lib/videos";
 import { CATEGORY_ICONS } from "@/components/CategoryIcons";
 import CategoryClient from "@/components/CategoryClient";
+import { SITE_NAME } from "@/lib/site";
 
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ slug: c.id }));
@@ -12,9 +13,20 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const category = getCategory(slug);
   if (!category) return {};
+  const title = `${category.label} - ${SITE_NAME}`;
+  const url = `/category/${category.id}`;
   return {
-    title: `${category.label} - Karthik Ragula`,
+    title,
     description: category.description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      title,
+      description: category.description,
+      url,
+      locale: "en_IN",
+    },
   };
 }
 
