@@ -3,7 +3,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SidebarShell from "@/components/SidebarShell";
-import ChatFab from "@/components/ChatFab";
+// Chat assistant hidden for now (open /api/chat proxy has no rate limiting yet).
+// import ChatFab from "@/components/ChatFab";
 import CursorFX from "@/components/CursorFX";
 import { ProgressProvider } from "@/context/ProgressContext";
 
@@ -54,7 +55,7 @@ export default function RootLayout({ children }) {
             <main className="flex-1">{children}</main>
             <Footer />
           </SidebarShell>
-          <ChatFab />
+          {/* <ChatFab /> */}
           <CursorFX />
         </ProgressProvider>
       </body>
