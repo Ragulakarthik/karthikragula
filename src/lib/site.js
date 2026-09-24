@@ -1,9 +1,14 @@
 // Public origin of the site, used for canonical URLs, the sitemap and share previews.
-// Set SITE_URL once a custom domain is live; Render provides RENDER_EXTERNAL_URL otherwise.
+// Set SITE_URL to override; on Vercel, VERCEL_PROJECT_PRODUCTION_URL tracks the production
+// domain (including a custom one, once added).
+const vercelProductionUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : null;
+
 export const SITE_URL = (
   process.env.SITE_URL ||
-  process.env.RENDER_EXTERNAL_URL ||
-  "https://karthikragula.onrender.com"
+  vercelProductionUrl ||
+  "https://karthikragula.vercel.app"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "Karthik Ragula";
