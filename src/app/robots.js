@@ -5,8 +5,7 @@ export default function robots() {
     rules: {
       userAgent: "*",
       allow: "/",
-      // The chat assistant is hidden from the UI for now; keep it out of search results too.
-      disallow: ["/api/", "/chat"],
+      disallow: "/api/",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
